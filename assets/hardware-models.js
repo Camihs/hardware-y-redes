@@ -228,6 +228,14 @@
     updateCards(id);
   }
 
+  selector.addEventListener("change",()=>{
+    const model=definitions.find(item=>item.id===selector.value);
+    if(!model)return;
+    updateCards(model.id);
+    if(info)info.textContent=model.name+". "+model.detail+" Arrastra el modelo para girarlo y usa los controles para acercarlo.";
+    viewer.autoRotate=true;
+    document.querySelector("#tRot")?.setAttribute("aria-pressed","true");
+  });
   viewer.addEventListener("load",()=>document.querySelector("#ovLoad")?.classList.remove("on"));
   window.addEventListener("beforeunload",()=>urls.forEach(url=>URL.revokeObjectURL(url)));
   window.HardwareModelLibrary={models:definitions.map(({id,name,detail})=>({id,name,detail})),select:selectHardware};
