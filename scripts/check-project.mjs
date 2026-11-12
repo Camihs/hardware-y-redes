@@ -8,7 +8,9 @@ const required = [
   "computadoraa.glb",
   "icon-192.png",
   "icon-512.png",
-  "icon-maskable-512.png"
+  "icon-maskable-512.png",
+  "assets/site-refinement.css",
+  "assets/site-interactions.js"
 ];
 
 const fail = (message) => {
@@ -41,6 +43,21 @@ for (const [index, match] of inlineScripts.entries()) {
   }
 }
 
+const referencedIds = new Set(ids);
+for (const [attribute, pattern] of [
+  ["enlaces internos", /\\bhref=["']#([^"']+)["']/g],
+  ["controles accesibles", /\\baria-controls=["']([^"']+)["']/g]
+]) {
+  const missing = [...html.matchAll(pattern)].map((match) => match[1]).filter((id) => !referencedIds.has(id));
+  if (missing.length) fail(`Hay ${attribute} sin destino: ${[...new Set(missing)].join(", ")}`);
+}
+
+try {
+  new vm.Script(fs.readFileSync("assets/site-interactions.js", "utf8"), { filename: "assets/site-interactions.js" });
+} catch (error) {
+  fail("Error de sintaxis en assets/site-interactions.js: " + error.message);
+}
+
 try {
   new vm.Script(fs.readFileSync("sw.js", "utf8"), { filename: "sw.js" });
 } catch (error) {
@@ -53,5 +70,5 @@ if (glb.length < 12 || glb.toString("ascii", 0, 4) !== "glTF") {
 }
 
 if (process.exitCode) process.exit();
-console.log(`✓ Revisión correcta: ${required.length} archivos esenciales, manifiesto, ${ids.length} IDs y ${inlineScripts.length} scripts.`);
+console.log(`✓ Revisión correcta: ${required.length} archivos esenciales, manifiesto, ${ids.length} IDs, destinos internos y ${inlineScripts.length + 2} scripts.`);
 console.log("ℹ El visor model-viewer tiene una ruta local opcional y un respaldo CDN; el video LSC es un recurso opcional pendiente de incorporar.");
