@@ -1,6 +1,6 @@
 /* Service worker de Hardware y Redes para Todos.
    Estrategia: shell precargado, navegación network-first y recursos cache-first. */
-const CACHE = "hyr-shell-v3";
+const CACHE = "hyr-shell-v4";
 const CORE = [
   "./",
   "./index.html",
@@ -8,7 +8,9 @@ const CORE = [
   "./icon-192.png",
   "./icon-512.png",
   "./icon-maskable-512.png",
-  "./computadoraa.glb"
+  "./computadoraa.glb",
+  "./assets/site-refinement.css",
+  "./assets/site-interactions.js"
 ];
 
 self.addEventListener("install", (event) => {
