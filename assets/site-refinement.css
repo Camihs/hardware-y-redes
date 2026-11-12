@@ -108,3 +108,7 @@ footer{background:#fff;border-top:1px solid var(--line);padding:34px 0 90px}
 .hardware-model-action{font-size:.8rem;font-weight:700;color:var(--g);margin-top:auto;padding-top:3px}
 @media(max-width:760px){.hardware-model-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hardware-gallery{padding:15px}}
 @media(max-width:420px){.hardware-model-grid{grid-template-columns:1fr}.hardware-model-card{display:grid;grid-template-columns:36px 1fr;align-items:center}.hardware-model-icon{grid-row:span 2}.hardware-model-detail,.hardware-model-action{grid-column:2}.hardware-model-action{padding-top:0}}
+
+.hardware-model-card:focus-visible{outline:3px solid #426b91;outline-offset:3px}
+.hardware-model-card:active{transform:translateY(0)}
+.hardware-model-action{display:inline-flex;align-items:center;gap:5px}
