@@ -4,6 +4,7 @@
   const viewer = document.querySelector("#mv");
   const selector = document.querySelector("#modelSel");
   const info = document.querySelector("#info");
+  const urls = new Map();
   if (!viewer || !selector) return;
 
   const rgba = (hex) => {
@@ -194,15 +195,22 @@
   gallery.setAttribute("aria-labelledby","hardware-gallery-title");
   gallery.innerHTML='<div class="hardware-gallery-head"><div><h3 id="hardware-gallery-title">Biblioteca de modelos 3D</h3><p>Elige una pieza para verla de cerca, girarla y explorar su forma.</p></div><span class="hardware-count">'+definitions.length+' modelos</span></div><div class="hardware-model-grid"></div>';
   const grid=gallery.querySelector(".hardware-model-grid");
+  const categoryOf=id=>["hw-router","hw-switch","hw-ap","hw-ethernet"].includes(id)?"Redes y conectividad":"Componentes del computador";
+  let previousCategory="";
   for(const model of definitions){
+    const category=categoryOf(model.id);
+    if(category!==previousCategory){const heading=document.createElement("h4");heading.className="hardware-category-title";heading.textContent=category;grid.append(heading);previousCategory=category;}
     const button=document.createElement("button");
-    button.type="button";button.className="hardware-model-card";button.dataset.model=model.id;
-    button.innerHTML='<span class="hardware-model-icon" aria-hidden="true">'+({ "hw-board":"▦","hw-cpu":"▣","hw-ram":"▤","hw-gpu":"▰","hw-ssd":"▱","hw-router":"⌁"}[model.id])+'</span><span class="hardware-model-name"></span><span class="hardware-model-detail"></span><span class="hardware-model-action">Explorar modelo →</span>';
+    button.type="button";button.className="hardware-model-card";button.dataset.model=model.id;button.dataset.category=category;
+    button.innerHTML='<span class="hardware-model-icon" aria-hidden="true">'+({ "hw-board":"▦","hw-cpu":"▣","hw-ram":"▤","hw-gpu":"▰","hw-ssd":"▱","hw-router":"⌁","hw-hdd":"▤","hw-psu":"▣","hw-nic":"▥","hw-switch":"▤","hw-ap":"⌁","hw-ethernet":"⌁"}[model.id]||"▣")+'</span><span class="hardware-model-name"></span><span class="hardware-model-detail"></span><span class="hardware-model-action">Explorar modelo →</span>';
     button.querySelector(".hardware-model-name").textContent=model.name;
     button.querySelector(".hardware-model-detail").textContent=model.detail;
     button.addEventListener("click",()=>selectHardware(model.id));
     grid.append(button);
   }
+  // Ordena el selector nativo en dos grupos para facilitar la elección.
+  selector.replaceChildren(new Option("Selecciona un modelo…",""));
+  for(const category of ["Componentes del computador","Redes y conectividad"]){const group=document.createElement("optgroup");group.label=category;definitions.filter(model=>categoryOf(model.id)===category).forEach(model=>group.append(new Option(model.name,model.id)));selector.append(group);}
   const infoParent=info?.parentNode;
   if(infoParent)infoParent.insertBefore(gallery,info.nextSibling);
   for(const model of definitions){
