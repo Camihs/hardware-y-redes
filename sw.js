@@ -9,8 +9,8 @@ const CORE = [
   "./icon-512.png",
   "./icon-maskable-512.png",
   "./computadoraa.glb",
-  "./assets/site-refinement.css",
-  "./assets/site-interactions.js"
+  "./assets/site-refinement.css?v=1",
+  "./assets/site-interactions.js?v=1"
 ];
 
 self.addEventListener("install", (event) => {
