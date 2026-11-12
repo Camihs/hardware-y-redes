@@ -185,6 +185,7 @@
       {at:[.88,0,0],size:[.22,.16,.2],color:"#d8b35a"},
       {at:[1.02,0,0],size:[.1,.2,.22],color:"#b7c2ce"}
     ]}
+  ];
   for(const model of definitions) urls.set(model.id,makeModel(model.name,model.parts));
 
   const gallery=document.createElement("section");
