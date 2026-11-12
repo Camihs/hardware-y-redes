@@ -141,16 +141,57 @@
       {at:[.1,.12,.36],size:[.08,.035,.08],color:"#e6c15a"},
       {at:[.3,.12,.36],size:[.08,.035,.08],color:"#55c98b"},
       {at:[0,-.1,-.4],size:[.75,.08,.08],color:"#aeb9c6"}
+    ]},
+    {id:"hw-hdd",name:"Disco duro (HDD)",detail:"El disco duro almacena el sistema, los programas y los archivos mediante platos magnéticos que giran a gran velocidad.",parts:[
+      {at:[0,0,0],size:[1.55,.24,1.15],color:"#aeb9c6"},
+      {at:[0,.13,0],size:[1.38,.035,1.02],color:"#d8dee5"},
+      {at:[-.12,.17,0],kind:"cylinder",r:.38,h:.035,color:"#bac5d0"},
+      {at:[-.12,.195,0],kind:"cylinder",r:.1,h:.025,color:"#d5ad4c"},
+      {at:[.56,.17,-.35],size:[.24,.025,.15],color:"#29384c"},
+      {at:[.56,.17,.35],size:[.24,.025,.15],color:"#29384c"}
+    ]},
+    {id:"hw-psu",name:"Fuente de poder",detail:"La fuente convierte la corriente eléctrica y entrega los voltajes adecuados a los componentes del computador.",parts:[
+      {at:[0,0,0],size:[1.45,.72,1.05],color:"#354255"},
+      {at:[0,.38,0],size:[1.28,.035,.9],color:"#536176"},
+      {at:[0,.41,0],kind:"cylinder",r:.31,h:.045,color:"#aeb9c6"},
+      {at:[0,.44,0],kind:"cylinder",r:.23,h:.035,color:"#263449"},
+      {at:[-.57,-.05,.48],size:[.18,.28,.08],color:"#c5a04b"},
+      {at:[.48,-.05,.48],size:[.18,.28,.08],color:"#c5a04b"}
+    ]},
+    {id:"hw-nic",name:"Tarjeta de red",detail:"La tarjeta de red permite conectar un computador a una red mediante Ethernet o, según el modelo, conexión inalámbrica.",parts:[
+      {at:[0,0,0],size:[1.25,.09,.7],color:"#176b48"},
+      {at:[-.35,.08,0],size:[.34,.08,.35],color:"#273449"},
+      {at:[.28,.08,0],size:[.34,.08,.35],color:"#aeb9c6"},
+      {at:[.55,.08,0],size:[.22,.23,.46],color:"#c5a04b"},
+      {at:[-.48,-.04,0],size:[.12,.03,.55],color:"#d9b454"}
+    ]},
+    {id:"hw-switch",name:"Switch de red",detail:"El switch conecta varios equipos dentro de una misma red local y envía los datos al puerto correspondiente.",parts:[
+      {at:[0,0,0],size:[1.8,.28,.8],color:"#354255"},
+      {at:[0,.16,0],size:[1.68,.045,.68],color:"#536176"},
+      ...Array.from({length:8},(_,i)=>({at:[-.68+i*.195,.2,.3],size:[.12,.12,.12],color:"#d8b35a"})),
+      ...Array.from({length:6},(_,i)=>({at:[-.55+i*.22,.2,-.22],size:[.07,.035,.07],color:i%2?"#55c98b":"#e0b84d"}))
+    ]},
+    {id:"hw-ap",name:"Punto de acceso Wi-Fi",detail:"El punto de acceso ofrece conexión inalámbrica a dispositivos y amplía la cobertura de una red local.",parts:[
+      {at:[0,0,0],kind:"cylinder",r:.62,h:.2,color:"#e2e7ec",segments:32},
+      {at:[0,.12,0],kind:"cylinder",r:.48,h:.055,color:"#f7f8fa",segments:32},
+      {at:[0,.16,0],kind:"cylinder",r:.055,h:.025,color:"#55c98b"},
+      {at:[0,-.12,0],kind:"cylinder",r:.22,h:.045,color:"#b7c2ce"}
+    ]},
+    {id:"hw-ethernet",name:"Cable Ethernet RJ45",detail:"El cable Ethernet transporta datos entre equipos de red. Sus conectores RJ45 se insertan en puertos de red.",parts:[
+      {at:[-.58,0,0],size:[.42,.16,.2],color:"#d8b35a"},
+      {at:[-.83,0,0],size:[.12,.2,.22],color:"#b7c2ce"},
+      {at:[-.98,0,0],size:[.06,.1,.16],color:"#e4c56d"},
+      {at:[.42,0,0],size:[.85,.09,.09],color:"#263449"},
+      {at:[.88,0,0],size:[.22,.16,.2],color:"#d8b35a"},
+      {at:[1.02,0,0],size:[.1,.2,.22],color:"#b7c2ce"}
     ]}
-  ];
-  const urls=new Map();
   for(const model of definitions) urls.set(model.id,makeModel(model.name,model.parts));
 
   const gallery=document.createElement("section");
   gallery.className="hardware-gallery";
   gallery.id="hardware-gallery";
   gallery.setAttribute("aria-labelledby","hardware-gallery-title");
-  gallery.innerHTML='<div class="hardware-gallery-head"><div><h3 id="hardware-gallery-title">Biblioteca de modelos 3D</h3><p>Elige una pieza para verla de cerca, girarla y explorar su forma.</p></div><span class="hardware-count">6 modelos</span></div><div class="hardware-model-grid"></div>';
+  gallery.innerHTML='<div class="hardware-gallery-head"><div><h3 id="hardware-gallery-title">Biblioteca de modelos 3D</h3><p>Elige una pieza para verla de cerca, girarla y explorar su forma.</p></div><span class="hardware-count">'+definitions.length+' modelos</span></div><div class="hardware-model-grid"></div>';
   const grid=gallery.querySelector(".hardware-model-grid");
   for(const model of definitions){
     const button=document.createElement("button");
@@ -163,15 +204,9 @@
   }
   const infoParent=info?.parentNode;
   if(infoParent)infoParent.insertBefore(gallery,info.nextSibling);
-  const optionModels=()=>{
-    for(const model of definitions){
-      if(![...selector.options].some(o=>o.value===model.id)){
-        const option=document.createElement("option");option.value=model.id;option.textContent=model.name;selector.append(option);
-      }
-    }
-  };
-  optionModels();
-  new MutationObserver(optionModels).observe(selector,{childList:true});
+  for(const model of definitions){
+    window.__hyrRegisterHardwareModel?.({id:model.id,name:model.name,src:urls.get(model.id)});
+  }
   const updateCards=(id)=>{
     gallery.querySelectorAll(".hardware-model-card").forEach(card=>{
       const active=card.dataset.model===id;
@@ -181,20 +216,17 @@
   };
   function selectHardware(id){
     const model=definitions.find(item=>item.id===id);if(!model)return;
+    window.__hyrSelectHardwareModel?.(id);
     selector.value=id;
-    viewer.src=urls.get(id);
     viewer.alt="Modelo 3D educativo: "+model.name;
     viewer.cameraOrbit="auto auto auto";
     viewer.fieldOfView="auto";
     viewer.autoRotate=true;
-    document.querySelector("#ovErr")?.classList.remove("on");
-    document.querySelector("#ovLoad")?.classList.add("on");
-    document.querySelector("#vrModel")?.setAttribute("gltf-model","url("+urls.get(id)+")");
+    document.querySelector("#tRot")?.setAttribute("aria-pressed","true");
     if(info)info.textContent=model.name+". "+model.detail+" Arrastra el modelo para girarlo y usa los controles para acercarlo.";
     updateCards(id);
   }
-  selector.addEventListener("change",()=>{if(urls.has(selector.value))selectHardware(selector.value);});
-  document.querySelector("#tRot")?.addEventListener("click",()=>{});
+
   viewer.addEventListener("load",()=>document.querySelector("#ovLoad")?.classList.remove("on"));
   window.addEventListener("beforeunload",()=>urls.forEach(url=>URL.revokeObjectURL(url)));
   window.HardwareModelLibrary={models:definitions.map(({id,name,detail})=>({id,name,detail})),select:selectHardware};
