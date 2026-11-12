@@ -40,7 +40,7 @@ self.addEventListener("fetch", (event) => {
         const response = await fetch(request);
         if (response.ok) {
           const cache = await caches.open(CACHE);
-          cache.put("./index.html", response.clone());
+          await cache.put("./index.html", response.clone());
         }
         return response;
       } catch {
@@ -50,21 +50,18 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  const refresh = fetch(request).then(async (response) => {
+    if (response.ok && response.type === "basic") {
+      const cache = await caches.open(CACHE);
+      await cache.put(request, response.clone());
+    }
+    return response;
+  });
+  event.waitUntil(refresh.then(() => undefined).catch(() => undefined));
+
   event.respondWith((async () => {
     const cached = await caches.match(request);
-    const refresh = fetch(request).then(async (response) => {
-      if (response.ok && response.type === "basic") {
-        const cache = await caches.open(CACHE);
-        await cache.put(request, response.clone());
-      }
-      return response;
-    });
-
-    if (cached) {
-      event.waitUntil(refresh.catch(() => undefined));
-      return cached;
-    }
-
+    if (cached) return cached;
     try {
       return await refresh;
     } catch {
