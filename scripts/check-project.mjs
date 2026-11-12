@@ -41,6 +41,12 @@ for (const [index, match] of inlineScripts.entries()) {
   }
 }
 
+try {
+  new vm.Script(fs.readFileSync("sw.js", "utf8"), { filename: "sw.js" });
+} catch (error) {
+  fail("Error de sintaxis en sw.js: " + error.message);
+}
+
 const glb = fs.readFileSync("computadoraa.glb");
 if (glb.length < 12 || glb.toString("ascii", 0, 4) !== "glTF") {
   fail("computadoraa.glb no parece ser un archivo GLB válido.");
