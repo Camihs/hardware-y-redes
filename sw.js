@@ -29,6 +29,15 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const request = event.request;
+  if (request.method === "HEAD") {
+    const getRequest = new Request(request.url, { method: "GET" });
+    event.respondWith((async () => {
+      const cached = await caches.match(getRequest);
+      if (cached) return new Response(null, { status: cached.status, statusText: cached.statusText, headers: cached.headers });
+      return fetch(request);
+    })());
+    return;
+  }
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
