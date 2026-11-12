@@ -1,53 +1,74 @@
 # Hardware y Redes para Todos
 
-Plataforma educativa e interactiva para aprender los fundamentos del hardware y las redes de computadores.
+Plataforma educativa e interactiva creada por estudiantes para acercar el hardware y las redes de computadores a todas las personas. Es un proyecto académico independiente: **no es una iniciativa política ni gubernamental**.
 
-## ¿Qué incluye?
+## Explora la aplicación
 
-El proyecto original es una experiencia web que reúne:
+La experiencia está organizada en seis secciones:
 
-- Introducción al hardware y a los componentes de un computador.
-- Exploración interactiva de partes y conceptos.
-- Modelo 3D de computador mediante `computadoraa.glb`.
-- Recursos de aprendizaje y prácticas interactivas.
-- Experiencias de visualización inmersiva cuando el dispositivo y el navegador son compatibles.
-- Diseño instalable como aplicación web progresiva (PWA), con manifiesto, service worker e iconos.
+- **Entrada:** bienvenida y acceso a la experiencia.
+- **Cargar:** visor interactivo del computador en 3D, con controles de cámara y opciones inmersivas según el dispositivo.
+- **Partes:** explicaciones de componentes y conceptos de hardware.
+- **Caminos:** distintas formas de aprender, con apoyos visuales, auditivos y actividades.
+- **Práctica:** juegos, asistente educativo, retos y ejercicios de redes.
+- **Equipo:** información del proyecto y herramientas de accesibilidad.
 
-> Este repositorio busca apoyar el aprendizaje. No es un producto gubernamental ni una iniciativa política.
+También incluye un modelo 3D, preferencias de accesibilidad, lectura en voz alta, subtítulos de voz, modo de alto contraste, tipografía amigable, control del tamaño del texto y una instalación PWA.
 
-## Estructura del proyecto
+## Archivos principales
 
-La versión inicial entregada contiene una aplicación web estática y sus recursos. Entre los archivos principales están:
-
-- `index.html`: interfaz y lógica de la experiencia educativa.
-- `manifest.webmanifest`: metadatos de instalación PWA.
-- `sw.js`: service worker para funciones offline.
-- `computadoraa.glb`: modelo 3D.
-- `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`: iconos de la aplicación.
-- `LEEME-INSTALAR.txt`: indicaciones originales de instalación.
+| Archivo | Función |
+| --- | --- |
+| index.html | Aplicación, estilos y lógica interactiva |
+| computadoraa.glb | Modelo 3D del computador |
+| manifest.webmanifest | Configuración de instalación PWA |
+| sw.js | Caché offline y actualización de recursos |
+| icon-192.png, icon-512.png | Iconos de la aplicación |
+| icon-maskable-512.png | Icono adaptable para instalación |
+| scripts/check-project.mjs | Comprobaciones automáticas del proyecto |
+| .github/workflows/pages.yml | Validación y publicación en GitHub Pages |
 
 ## Ejecutar localmente
 
-Como es una aplicación web estática, sirve los archivos desde un servidor HTTP local. Por ejemplo, con la extensión **Live Server** de Visual Studio Code:
+1. Clona o descarga este repositorio.
+2. Abre la carpeta en Visual Studio Code.
+3. Inicia un servidor local, por ejemplo con la extensión **Live Server**.
+4. Abre la dirección local que indique la extensión.
 
-1. Abre la carpeta del proyecto en Visual Studio Code.
-2. Inicia Live Server desde `index.html`.
-3. Abre la dirección local que muestra la extensión.
+No abras el HTML directamente con file://: los service workers, la instalación PWA y algunas funciones del navegador necesitan HTTP o HTTPS.
 
-No se recomienda abrir directamente el HTML con `file://`, porque algunas funciones del navegador —como service workers, instalación PWA y permisos— requieren un contexto seguro servido por HTTP o HTTPS.
+## Publicar con GitHub Pages
 
-## Publicación
+El flujo de GitHub Actions verifica los archivos y la sintaxis de JavaScript. Si las comprobaciones pasan en la rama main, intenta publicar automáticamente el contenido del repositorio.
 
-Puede publicarse como sitio estático mediante GitHub Pages o cualquier hosting estático. La configuración final debe comprobar las rutas de recursos, el modelo 3D, el service worker y el comportamiento offline en la URL publicada.
+Para activar Pages la primera vez:
 
-## Accesibilidad, compatibilidad y seguridad
+1. En GitHub abre **Settings → Pages**.
+2. En **Build and deployment**, selecciona **GitHub Actions** como fuente.
+3. Revisa la pestaña **Actions** y espera a que finalice el flujo **Verificar y publicar Hardware y Redes**.
+4. La dirección del sitio aparecerá en **Settings → Pages** y en el resumen del despliegue.
 
-Las mejoras se deben validar en móvil y escritorio, con teclado y lector de pantalla cuando corresponda. Las funciones de cámara, AR/VR, micrófono u otros permisos deben solicitarse solo cuando el usuario active la función que los necesita y deben explicar claramente su propósito.
+Cada nuevo cambio que llegue a main volverá a ejecutar la verificación y la publicación.
 
-## Estado del proyecto
+## Recursos opcionales y compatibilidad
 
-Este repositorio está en preparación. La siguiente etapa es incorporar los archivos completos de la aplicación original y revisar su funcionamiento antes de aplicar cambios de diseño, rendimiento, accesibilidad, PWA y documentación.
+- El visor intenta cargar vendor/model-viewer.min.js y cuenta con una alternativa CDN. La carpeta vendor/ no está incluida actualmente; por eso la primera carga del visor puede necesitar conexión a internet.
+- La lección de Lengua de Señas Colombiana reserva el espacio para videos/ram-lsc.mp4. Ese video no está incluido todavía; la aplicación muestra un aviso en su lugar.
+- Las funciones de realidad aumentada, realidad virtual, cámara, voz y otros permisos dependen del navegador, del dispositivo y de HTTPS. Si una función no está disponible, se debe poder continuar con el contenido educativo principal.
+- El service worker precarga los recursos esenciales y conserva una copia para uso sin conexión después de la primera visita.
 
-## Contribuciones
+## Verificación automática
 
-Las propuestas de mejora son bienvenidas. Describe el problema, los pasos para reproducirlo y el navegador/dispositivo donde ocurre.
+Antes de publicar, el flujo revisa que existan los archivos esenciales, que el manifiesto sea JSON válido, que no haya IDs HTML duplicados, que los scripts JavaScript embebidos no tengan errores de sintaxis y que el modelo tenga cabecera GLB válida.
+
+Para ejecutar la misma comprobación localmente, usa Node.js 22 o superior:
+
+```bash
+node scripts/check-project.mjs
+```
+
+## Accesibilidad y contribuciones
+
+El proyecto busca ser usable con teclado, lectores de pantalla, controles de tamaño de texto, alto contraste y reducción de movimiento. Las mejoras deben mantener esas opciones y solicitar permisos solo cuando la persona active una función que los necesite.
+
+Para reportar un problema, indica qué sección estabas usando, qué esperabas que ocurriera, qué ocurrió realmente y el navegador/dispositivo utilizado.
