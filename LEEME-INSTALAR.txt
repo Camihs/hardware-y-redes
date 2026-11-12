@@ -1,0 +1,10 @@
+APP: Hardware y Redes para todos
+1) Sube TODOS estos archivos juntos a un sitio con HTTPS:
+   - GitHub Pages: crea un repositorio, sube los archivos, y en Settings > Pages elige la rama principal.
+   - Netlify: entra a app.netlify.com/drop y arrastra la carpeta descomprimida.
+2) Abre la dirección que te den:
+   - Android (Chrome): menú > Instalar app.
+   - iPhone (Safari): Compartir > Agregar a pantalla de inicio.
+   - Computador (Chrome o Edge): ícono de instalar en la barra de direcciones.
+3) Para que el visor 3D funcione sin internet: descarga model-viewer.min.js (versión 4.1.0)
+   y guárdalo en la carpeta vendor/ junto a index.html.
