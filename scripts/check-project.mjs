@@ -45,8 +45,8 @@ for (const [index, match] of inlineScripts.entries()) {
 
 const referencedIds = new Set(ids);
 for (const [attribute, pattern] of [
-  ["enlaces internos", /\\bhref=["']#([^"']+)["']/g],
-  ["controles accesibles", /\\baria-controls=["']([^"']+)["']/g]
+  ["enlaces internos", /\bhref=["']#([^"']+)["']/g],
+  ["controles accesibles", /\baria-controls=["']([^"']+)["']/g]
 ]) {
   const missing = [...html.matchAll(pattern)].map((match) => match[1]).filter((id) => !referencedIds.has(id));
   if (missing.length) fail(`Hay ${attribute} sin destino: ${[...new Set(missing)].join(", ")}`);
