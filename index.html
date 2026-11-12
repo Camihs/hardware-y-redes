@@ -990,6 +990,6 @@ $("#qSend").onclick=()=>send($("#qIn").value);$("#qIn").onkeydown=e=>{if(e.key==
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SR)$("#qMic").hidden=true;else $("#qMic").onclick=()=>{const r=new SR();r.lang="es-CO";r.onresult=e=>send(e.results[0][0].transcript);r.onerror=()=>toast("No se pudo escuchar. Escribe tu pregunta.");toast("Te escucho…");r.start()};
 </script>
-  <script src="./assets/hardware-models.js?v=1" defer></script>
+  <script src="./assets/hardware-models.js?v=2" defer></script>
   <script src="./assets/site-interactions.js?v=1" defer></script>\n</body>
 </html>
