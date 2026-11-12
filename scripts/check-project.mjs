@@ -53,11 +53,18 @@ for (const [attribute, pattern] of [
   if (missing.length) fail(`Hay ${attribute} sin destino: ${[...new Set(missing)].join(", ")}`);
 }
 
-try {
-  new vm.Script(fs.readFileSync("assets/site-interactions.js", "utf8"), { filename: "assets/site-interactions.js" });
-  new vm.Script(fs.readFileSync("assets/hardware-models.js", "utf8"), { filename: "assets/hardware-models.js" });
-} catch (error) {
-  fail("Error de sintaxis en assets/site-interactions.js: " + error.message);
+for (const file of ["assets/site-interactions.js", "assets/hardware-models.js"]) {
+  try {
+    new vm.Script(fs.readFileSync(file, "utf8"), { filename: file });
+  } catch (error) {
+    fail("Error de sintaxis en " + file + ": " + error.message);
+  }
+}
+const modelLibrary = fs.readFileSync("assets/hardware-models.js", "utf8");
+const modelCount = (modelLibrary.match(/\{id:"hw-/g) || []).length;
+if (modelCount < 10) fail("La biblioteca 3D debe incluir al menos 10 modelos educativos.");
+if (!html.includes("__hyrRegisterHardwareModel") || !html.includes("__hyrSelectHardwareModel")) {
+  fail("El visor 3D no tiene conectada la biblioteca de modelos.");
 }
 
 try {
@@ -72,5 +79,5 @@ if (glb.length < 12 || glb.toString("ascii", 0, 4) !== "glTF") {
 }
 
 if (process.exitCode) process.exit();
-console.log(`✓ Revisión correcta: ${required.length} archivos esenciales, manifiesto, ${ids.length} IDs, destinos internos y ${inlineScripts.length + 3} scripts.`);
+console.log(`✓ Revisión correcta: ${required.length} archivos esenciales, manifiesto, ${ids.length} IDs, destinos internos y ${inlineScripts.length + 3} scripts; ${modelCount} modelos 3D.`);
 console.log("ℹ El visor model-viewer tiene una ruta local opcional y un respaldo CDN; el video LSC es un recurso opcional pendiente de incorporar.");
