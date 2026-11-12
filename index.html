@@ -739,6 +739,8 @@ mv.addEventListener("click",e=>{if(!S.pin){partClick(e);return}const r=mv.positi
 function renderSel(){const s=$("#modelSel");s.replaceChildren();S.models.forEach(m=>s.append(mk("option",{value:m.id,text:m.name})));s.value=S.active}
 $("#modelSel").onchange=e=>selectModel(e.target.value);
 function selectModel(id){const m=S.models.find(x=>x.id===id);if(!m)return;S.active=id;notes();$("#ovErr").classList.remove("on");$("#ovLoad").classList.add("on");mv.src=m.src;mv.alt="Modelo 3D: "+m.name;$("#vrModel")?.setAttribute("gltf-model","url("+m.src+")");renderNotes();renderSel()}
+window.__hyrRegisterHardwareModel=(model)=>{if(!S.models.some(item=>item.id===model.id)){S.models.push(model);S.notes[model.id]=[]}renderSel()};
+window.__hyrSelectHardwareModel=(id)=>selectModel(id);
 function loadFile(f){if(!f)return;if(!/\.glb$/i.test(f.name)){toast("Solo se aceptan archivos .glb");return}
   const id="m"+(++S.seq);S.models.push({id,name:f.name,src:URL.createObjectURL(f)});selectModel(id);setMode("3d");$("#visor").scrollIntoView();toast("Modelo cargado: "+f.name);if(P.vib&&navigator.vibrate)navigator.vibrate(80)}
 $("#file").onchange=e=>{loadFile(e.target.files[0]);e.target.value=""};
