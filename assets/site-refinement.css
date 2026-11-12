@@ -112,3 +112,14 @@ footer{background:#fff;border-top:1px solid var(--line);padding:34px 0 90px}
 .hardware-model-card:focus-visible{outline:3px solid #426b91;outline-offset:3px}
 .hardware-model-card:active{transform:translateY(0)}
 .hardware-model-action{display:inline-flex;align-items:center;gap:5px}
+
+
+/* Biblioteca 3D: selección clara y agrupación por tipo */
+.hardware-category-title{grid-column:1/-1;margin:12px 2px 0;padding:10px 2px 5px;border-bottom:1px solid var(--line);font-size:.92rem;font-weight:800;letter-spacing:.01em;color:#35445b}
+.hardware-category-title:first-child{margin-top:0}
+.hardware-model-card[hidden],.hardware-category-title[hidden]{display:none!important}
+.hardware-model-card{min-height:154px}
+.hardware-model-card.active .hardware-model-icon{background:#ead8e1;color:#702344}
+.hardware-model-card.active .hardware-model-action{color:#702344}
+.hardware-model-card:focus-visible{outline:3px solid #426b91;outline-offset:3px}
+@media(max-width:420px){.hardware-model-card{min-height:0}}
