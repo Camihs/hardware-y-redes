@@ -1,10 +1,28 @@
-APP: Hardware y Redes para todos
-1) Sube TODOS estos archivos juntos a un sitio con HTTPS:
-   - GitHub Pages: crea un repositorio, sube los archivos, y en Settings > Pages elige la rama principal.
-   - Netlify: entra a app.netlify.com/drop y arrastra la carpeta descomprimida.
-2) Abre la dirección que te den:
-   - Android (Chrome): menú > Instalar app.
-   - iPhone (Safari): Compartir > Agregar a pantalla de inicio.
-   - Computador (Chrome o Edge): ícono de instalar en la barra de direcciones.
-3) Para que el visor 3D funcione sin internet: descarga model-viewer.min.js (versión 4.1.0)
-   y guárdalo en la carpeta vendor/ junto a index.html.
+HARDWARE Y REDES PARA TODOS
+Aplicación educativa web creada por estudiantes.
+
+PUBLICACIÓN
+1. El repositorio incluye los archivos del sitio y un flujo de GitHub Actions.
+2. En GitHub abre Settings > Pages.
+3. En Build and deployment selecciona GitHub Actions.
+4. En Actions ejecuta o revisa "Verificar y publicar Hardware y Redes".
+5. Cuando el despliegue termine, abre la URL que aparece en Settings > Pages.
+
+USO LOCAL
+1. Abre la carpeta en Visual Studio Code.
+2. Inicia Live Server u otro servidor HTTP local.
+3. No abras index.html con file://: la PWA y los permisos requieren HTTP/HTTPS.
+
+INSTALACIÓN
+- Android (Chrome): menú > Instalar app.
+- iPhone (Safari): Compartir > Agregar a pantalla de inicio.
+- Computador (Chrome/Edge): usa el icono de instalación del navegador cuando aparezca.
+
+RECURSOS OPCIONALES
+- El visor 3D usa computadoraa.glb. model-viewer tiene respaldo CDN; la carpeta vendor/ aún no está incluida.
+- El video videos/ram-lsc.mp4 es un recurso pendiente; la aplicación muestra un aviso si no está disponible.
+- AR/VR, cámara, voz y otras funciones dependen del dispositivo, navegador y HTTPS.
+
+VERIFICACIÓN
+Con Node.js 22 o superior ejecuta:
+node scripts/check-project.mjs
