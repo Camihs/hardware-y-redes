@@ -346,3 +346,47 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify
 @media(max-width:900px){
   .hero{padding-top:24px!important}
 }
+
+
+/* Presentación primero; el laboratorio queda como sección siguiente */
+#main > .hero#visor{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:30px!important;
+  padding-top:clamp(28px,4vw,48px)!important;
+  padding-bottom:clamp(34px,5vw,58px)!important;
+}
+#main > .hero#visor > div:first-child{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:900px;
+  min-height:0;
+}
+#main > .hero#visor h1{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  max-width:17ch;
+  margin:0 0 18px;
+  font-size:clamp(2.35rem,5.2vw,4.4rem);
+}
+#main > .hero#visor .lead{max-width:68ch;margin:0 0 20px}
+#main > .hero#visor .viewer{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-self:stretch;
+  width:100%;
+  max-width:none;
+}
+#main > .hero#visor .stage{height:clamp(300px,42vw,460px);max-height:460px}
+@media(max-width:680px){
+  #main > .hero#visor{gap:22px!important;padding-top:26px!important;padding-bottom:34px!important}
+  #main > .hero#visor h1{font-size:clamp(2.15rem,9vw,3.1rem)}
+  #main > .hero#visor .stage{height:clamp(260px,72vw,390px);max-height:390px}
+}
