@@ -333,3 +333,16 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start;justify
 @media(max-width:360px){
   .stage{height:260px;min-height:260px;max-height:260px}
 }
+
+
+/* Acerca el contenido principal al encabezado y elimina el vacío superior */
+.hero{
+  padding-top:clamp(18px,2.5vw,32px)!important;
+  margin-top:0!important;
+}
+@media(min-width:901px){
+  .hero{padding-bottom:clamp(34px,4vw,54px)!important}
+}
+@media(max-width:900px){
+  .hero{padding-top:24px!important}
+}
